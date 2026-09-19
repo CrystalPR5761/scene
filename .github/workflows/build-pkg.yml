@@ -30,7 +30,7 @@ jobs:
 
       - name: Build PKG
         run: |
-          dotnet run --project repkg/RePKG/RePKG.csproj -c Release -- repack ./pkginput -o ./scene.pkg -m PKGV0024
+          dotnet run --project repkg/RePKG/RePKG.csproj --framework net8.0 -c Release -- pack ./pkginput -o ./scene.pkg -m PKGV0024
           python3 - <<'PY'
           from pathlib import Path
           p = Path("scene.pkg")
