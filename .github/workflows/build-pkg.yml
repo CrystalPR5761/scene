@@ -12,17 +12,6 @@ jobs:
       - name: Checkout wallpaper
         uses: actions/checkout@v4
 
-      - name: Checkout RePKG
-        uses: actions/checkout@v4
-        with:
-          repository: addallno/repkg-ng
-          path: repkg
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
       - name: Prepare package input
         run: |
           mkdir pkginput
@@ -30,15 +19,84 @@ jobs:
 
       - name: Build PKG
         run: |
-          dotnet run --project repkg/RePKG/RePKG.csproj --framework net8.0 -c Release -- pack ./pkginput -o ./scene.pkg -m PKGV0024
           python3 - <<'PY'
           from pathlib import Path
+          import struct
+
+          root = Path("pkginput")
+          files = sorted(p for p in root.rglob("*") if p.is_file())
+          magic = b"PKGV0024"
+
+          entries = []
+          for p in files:
+              name = p.relative_to(root).as_posix()
+              data = p.read_bytes()
+              entries.append((name, data))
+
+          header = bytearray()
+          header += struct.pack("<I", len(magic))
+          header += magic
+          header += struct.pack("<I", len(entries))
+
+          offset = 0
+          for name, data in entries:
+              nb = name.encode("utf-8")
+              header += struct.pack("<I", len(nb))
+              header += nb
+              header += struct.pack("<ii", offset, len(data))
+              offset += len(data)
+
+          out = Path("scene.pkg")
+          with out.open("wb") as f:
+              f.write(header)
+              for _, data in entries:
+                  f.write(data)
+
+          raw = out.read_bytes()
+          assert raw[:4] == struct.pack("<I", 8)
+          assert raw[4:12] == magic
+          print("PKG magic:", raw[4:12])
+          print("Files:", len(entries))
+          print("PKG size:", len(raw))
+          PY
+
+      - name: Verify PKG
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import struct
+
           p = Path("scene.pkg")
-          with p.open("rb") as f:
-              magic = f.read(8)
-          print("PKG magic:", magic)
-          print("PKG size:", p.stat().st_size)
-          assert magic == b"PKGV0024", f"Unexpected magic: {magic!r}"
+          data = p.read_bytes()
+          pos = 0
+
+          magic_len = struct.unpack_from("<I", data, pos)[0]
+          pos += 4
+          magic = data[pos:pos + magic_len]
+          pos += magic_len
+          assert magic == b"PKGV0024"
+
+          count = struct.unpack_from("<I", data, pos)[0]
+          pos += 4
+
+          entries = []
+          for _ in range(count):
+              nlen = struct.unpack_from("<I", data, pos)[0]
+              pos += 4
+              name = data[pos:pos + nlen].decode("utf-8")
+              pos += nlen
+              offset, size = struct.unpack_from("<ii", data, pos)
+              pos += 8
+              entries.append((name, offset, size))
+
+          body_start = pos
+          for name, offset, size in entries:
+              assert body_start + offset + size <= len(data), name
+
+          print("Verified PKGV0024")
+          print("Entries:", count)
+          print("Header:", body_start, "bytes")
+          print("Body:", len(data) - body_start, "bytes")
           PY
 
       - name: Upload PKG
