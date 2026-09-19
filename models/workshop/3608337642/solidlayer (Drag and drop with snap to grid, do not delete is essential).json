@@ -1,0 +1,5 @@
+ord.xy = a_TexCoord;
+
+#if MASK == 1
+	v_TexCoord.zw = vec2(a_TexCoord.x * g_Texture1Resolution.z / g_Texture1Resolution.x,
+						a_TexCoord.y * g_T

@@ -1,0 +1,9 @@
+exture1Resolution.w / g_Texture1Resolution.y);
+#endif
+}
+// [COMBO] {"material":"ui_editor_properties_blend_mode","combo":"BLENDMODE","type":"imageblending","default":31}
+
+// [COMBO] {"material":"Axis","combo":"AXIS","type":"options","default":0,"options":{"Horizontal":0,"Vertical":1}}
+
+#include "common.h"
+#include "common_blend

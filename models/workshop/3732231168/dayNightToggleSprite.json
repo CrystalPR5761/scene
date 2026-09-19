@@ -1,0 +1,2 @@
+eq2]) * 0.5;
+	float barVolume = lerp(barVolume1, barVolume2, smoothstep(0, 1, frac(frequency)));

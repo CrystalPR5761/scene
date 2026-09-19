@@ -1,0 +1,51 @@
+emin" : 0,
+			"scalemax" : 35,
+			"scalemin" : 20
+		},
+		{
+			"fadeintime" : 0.1,
+			"id" : 10,
+			"name" : "alphafade"
+		}
+	],
+	"renderer" : 
+	[
+		{
+			"id" : 1,
+			"name" : "sprite"
+		}
+	],
+	"starttime" : 15
+}{
+	"animationmode" : "randomframe",
+	"children" : [],
+	"controlpoint" : 
+	[
+		{
+			"flags" : 1,
+			"id" : 0,
+			"offset" : "0 0 0"
+		},
+		{
+			"flags" : 0,
+			"id" : 1,
+			"offset" : "0 -9999 0"
+		},
+		{
+			"flags" : 0,
+			"id" : 2,
+			"offset" : "0 0 0"
+		},
+		{
+			"flags" : 0,
+			"id" : 3,
+			"offset" : "0 0 0"
+		},
+		{
+			"flags" : 0,
+			"id" : 4,
+			"offset" : "0 0 0"
+		},
+		{
+			"flags" : 0,
+	

@@ -1,0 +1,8 @@
+
+
+	// How tall the bar is in the current pixel's column
+	float barHeight = lerp(u_BarBounds.x, u_BarBounds.y, barVolume);
+	// bar = 1 if this pixel is inside a bar, 0 if outside
+#if ANTIALIAS == 1
+	float verticalSmoothing = u_AASmoothness.y * 0.05;
+	verticalSmoothing *= saturate(lerp(0, 1, barVolu

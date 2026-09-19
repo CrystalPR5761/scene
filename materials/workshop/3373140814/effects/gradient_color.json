@@ -1,0 +1,13 @@
+orkshop/2093672045/particle/halo_8_1.json",
+	"maxcount" : 1000,
+	"operator" : 
+	[
+		{
+			"drag" : 1,
+			"gravity" : "0 -50 0",
+			"id" : 7,
+			"name" : "movement"
+		},
+		{
+			"endtime" : 0.05,
+			"en

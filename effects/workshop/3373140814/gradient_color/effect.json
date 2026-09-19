@@ -1,0 +1,25 @@
+: "lifetimerandom"
+		},
+		{
+			"id" : 3,
+			"max" : 40,
+			"min" : 30,
+			"name" : "sizerandom"
+		},
+		{
+			"id" : 4,
+			"max" : "249 222 255",
+			"min" : "255 173 169",
+			"name" : "colorrandom"
+		},
+		{
+			"bounds" : "0 1",
+			"count" : 5,
+			"id" : 5,
+			"limitbehavior" : "repeat",
+			"name" : "mapsequencearoundcontrolpoint",
+			"speedmax" : "0 100 0",
+			"speedmin" : "0 100 0"
+		}
+	],
+	"material" : "materials/w

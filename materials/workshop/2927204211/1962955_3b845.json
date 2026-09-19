@@ -1,0 +1,20 @@
+" : "1 1 0",
+			"distancemax" : 1,
+			"distancemin" : 1,
+			"id" : 6,
+			"name" : "sphererandom",
+			"origin" : "0 0 0",
+			"rate" : 100,
+			"sign" : "0 0 0",
+			"speedmax" : 20,
+			"speedmin" : 0
+		}
+	],
+	"flags" : 0,
+	"initializer" : 
+	[
+		{
+			"id" : 2,
+			"max" : 2.25,
+			"min" : 1,
+			"name" 
