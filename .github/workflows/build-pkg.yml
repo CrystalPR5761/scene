@@ -61,6 +61,7 @@ jobs:
           PY
 
       - name: Verify PKG
+        if: success()
         run: |
           python3 - <<'PY'
           from pathlib import Path
