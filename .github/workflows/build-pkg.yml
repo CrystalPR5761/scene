@@ -1,0 +1,49 @@
+name: Build PKG
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout wallpaper
+        uses: actions/checkout@v4
+
+      - name: Checkout RePKG
+        uses: actions/checkout@v4
+        with:
+          repository: addallno/repkg-ng
+          path: repkg
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Prepare package input
+        run: |
+          mkdir pkginput
+          cp -r effects fonts materials models particles shaders scene.json pkginput/
+
+      - name: Build PKG
+        run: |
+          dotnet run --project repkg/RePKG/RePKG.csproj -c Release -- repack ./pkginput -o ./scene.pkg -m PKGV0024
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("scene.pkg")
+          with p.open("rb") as f:
+              magic = f.read(8)
+          print("PKG magic:", magic)
+          print("PKG size:", p.stat().st_size)
+          assert magic == b"PKGV0024", f"Unexpected magic: {magic!r}"
+          PY
+
+      - name: Upload PKG
+        uses: actions/upload-artifact@v4
+        with:
+          name: scene-pkg
+          path: scene.pkg
+          if-no-files-found: error
